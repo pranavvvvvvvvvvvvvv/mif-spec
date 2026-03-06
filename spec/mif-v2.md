@@ -5,6 +5,8 @@
 - **Created**: 2026-03-03
 - **Author(s)**: Varun Sharma (@varun29ankuS)
 
+**Note:** v2.0 is the first public release. The "v2" numbering reflects internal iterations during development. There is no public v1 specification.
+
 ## Abstract
 
 MIF is a vendor-neutral JSON schema for exchanging AI agent memories between systems. It defines a minimal, extensible envelope for memories and optional knowledge graph data, enabling portability across providers.

@@ -118,17 +118,17 @@ Handles both MIF v2 (direct deserialization) and MIF v1 (automatic conversion). 
 
 ```bash
 # Export with auto-format (defaults to MIF v2)
-curl -X POST http://localhost:3030/api/mif/export \
+curl -X POST http://localhost:3030/api/export/mif \
   -H "X-API-Key: $KEY" \
   -d '{"user_id": "user-1", "include_graph": true}'
 
 # Import with auto-detection
-curl -X POST http://localhost:3030/api/mif/import \
+curl -X POST http://localhost:3030/api/import/mif \
   -H "X-API-Key: $KEY" \
   -d '{"user_id": "user-1", "data": "<json or markdown string>"}'
 
 # Import with explicit format
-curl -X POST http://localhost:3030/api/mif/import \
+curl -X POST http://localhost:3030/api/import/mif \
   -H "X-API-Key: $KEY" \
   -d '{"user_id": "user-1", "format": "mem0", "data": "[{\"memory\": \"...\"}]"}'
 ```

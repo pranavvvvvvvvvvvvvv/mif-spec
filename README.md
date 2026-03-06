@@ -62,10 +62,10 @@ Format adapters bridge existing memory systems to MIF:
 
 | System | Status | Location |
 |--------|--------|----------|
-| [shodh-memory](https://github.com/varun29ankuS/shodh-memory) | Production | Built-in (`/api/mif/export`, `/api/mif/import`) |
-| mem0 JSON | Production | [adapters/mem0](./adapters/mem0/) |
-| Markdown (YAML frontmatter) | Production | [adapters/markdown](./adapters/markdown/) |
-| Generic JSON | Production | [adapters/generic-json](./adapters/generic-json/) |
+| [shodh-memory](https://github.com/varun29ankuS/shodh-memory) | Production | Built-in (`/api/export/mif`, `/api/import/mif`) |
+| mem0 JSON | Production | [Rust adapter](https://github.com/varun29ankuS/shodh-memory/blob/main/src/mif/adapters/mem0.rs) |
+| Markdown (YAML frontmatter) | Production | [Rust adapter](https://github.com/varun29ankuS/shodh-memory/blob/main/src/mif/adapters/markdown.rs) |
+| Generic JSON | Production | [Rust adapter](https://github.com/varun29ankuS/shodh-memory/blob/main/src/mif/adapters/generic.rs) |
 | CrewAI | Planned | — |
 | LangChain | Planned | — |
 
@@ -85,6 +85,18 @@ We welcome adapter implementations for any memory system. See [CONTRIBUTING.md](
 - [MCP SEP #2342](https://github.com/modelcontextprotocol/modelcontextprotocol/pull/2342) — Original proposal to the Model Context Protocol
 - [tower-mcp #531](https://github.com/joshrotenberg/tower-mcp/issues/531) — Tracking issue in tower-mcp
 - [shodh-memory](https://github.com/varun29ankuS/shodh-memory) — Reference implementation
+
+## Validation
+
+```bash
+pip install -r requirements.txt
+python validate.py examples/*.mif.json
+python tests/round_trip.py examples/*.mif.json
+```
+
+## Version Note
+
+MIF v2.0 is the first public release. The "v2" numbering reflects internal iterations during development in shodh-memory. There is no public v1 specification.
 
 ## License
 
