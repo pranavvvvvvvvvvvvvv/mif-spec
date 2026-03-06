@@ -1,5 +1,7 @@
 # mif-tools
 
+<!-- mcp-name: io.github.varun29ankuS/mif-tools -->
+
 Vendor-neutral memory portability for AI agents. Convert between memory formats (mem0, markdown, generic JSON) and the [Memory Interchange Format (MIF)](https://github.com/varun29ankuS/mif-spec).
 
 ## Install
