@@ -9,7 +9,8 @@
   },
   "files": [
     "dist",
-    "schema"
+    "schema",
+    "README.md"
   ],
   "scripts": {
     "build": "tsc",

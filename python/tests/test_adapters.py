@@ -121,6 +121,48 @@ class TestShodhAdapter:
         assert parsed["mif_version"] == "2.0"
         assert isinstance(parsed["memories"], list)
 
+    # ── roundtrip ──
+
+    def test_roundtrip_v2(self, shodh_v2_json):
+        """shodh v2 → MIF → shodh v2: lossless round-trip."""
+        doc = self.adapter.to_mif(shodh_v2_json)
+        output = self.adapter.from_mif(doc)
+        doc2 = self.adapter.to_mif(output)
+        assert len(doc2.memories) == len(doc.memories)
+        for m1, m2 in zip(doc.memories, doc2.memories):
+            assert m1.id == m2.id
+            assert m1.content == m2.content
+            assert m1.created_at == m2.created_at
+            assert m1.memory_type == m2.memory_type
+            assert m1.tags == m2.tags
+
+    def test_roundtrip_preserves_knowledge_graph(self):
+        data = json.dumps({
+            "mif_version": "2.0",
+            "memories": [{"id": str(uuid.uuid4()), "content": "test", "created_at": "2025-01-01T00:00:00Z"}],
+            "knowledge_graph": {
+                "entities": [{"id": "e1", "name": "Alice", "types": ["person"]}],
+                "relationships": [{"id": "r1", "source_entity_id": "e1", "target_entity_id": "e1", "relation_type": "self"}],
+            },
+        })
+        doc = self.adapter.to_mif(data)
+        output = self.adapter.from_mif(doc)
+        doc2 = self.adapter.to_mif(output)
+        assert doc2.knowledge_graph is not None
+        assert len(doc2.knowledge_graph.entities) == 1
+        assert doc2.knowledge_graph.entities[0].name == "Alice"
+
+    def test_roundtrip_preserves_vendor_extensions(self):
+        data = json.dumps({
+            "mif_version": "2.0",
+            "memories": [],
+            "vendor_extensions": {"x_custom": {"key": "value"}},
+        })
+        doc = self.adapter.to_mif(data)
+        output = self.adapter.from_mif(doc)
+        doc2 = self.adapter.to_mif(output)
+        assert doc2.vendor_extensions["x_custom"]["key"] == "value"
+
     # ── empty input ──
 
     def test_to_mif_empty_memories(self):
@@ -298,6 +340,28 @@ class TestMem0Adapter:
         output = self.adapter.from_mif(doc)
         assert json.loads(output) == []
 
+    # ── roundtrip ──
+
+    def test_roundtrip(self, mem0_json):
+        """mem0 → MIF → mem0: content and ids preserved."""
+        doc = self.adapter.to_mif(mem0_json)
+        output = self.adapter.from_mif(doc)
+        items = json.loads(output)
+        original = json.loads(mem0_json)
+        assert len(items) == len(original)
+        for orig, rt in zip(original, items):
+            assert rt["memory"] == orig["memory"]
+            assert rt["id"] == orig["id"]
+            # Timezone format may differ (Z vs +00:00), both valid ISO 8601
+            assert rt["created_at"].replace("+00:00", "Z") == orig["created_at"].replace("+00:00", "Z")
+
+    def test_roundtrip_user_id(self, mem0_json):
+        """mem0 → MIF → mem0: user_id preserved via export_meta."""
+        doc = self.adapter.to_mif(mem0_json)
+        output = self.adapter.from_mif(doc)
+        items = json.loads(output)
+        assert items[0]["user_id"] == "user-42"
+
 
 # ── GenericJsonAdapter ───────────────────────────────────────────────────
 
@@ -437,6 +501,25 @@ class TestGenericJsonAdapter:
         doc = MifDocument(memories=[])
         output = self.adapter.from_mif(doc)
         assert json.loads(output) == []
+
+    # ── roundtrip ──
+
+    def test_roundtrip(self, generic_json):
+        """generic → MIF → generic: content and type preserved."""
+        doc = self.adapter.to_mif(generic_json)
+        output = self.adapter.from_mif(doc)
+        items = json.loads(output)
+        original = json.loads(generic_json)
+        assert len(items) == len(original)
+        assert items[0]["content"] == original[0]["content"]
+        assert items[0]["type"] == original[0]["type"]
+
+    def test_roundtrip_tags(self, generic_json):
+        """generic → MIF → generic: tags preserved."""
+        doc = self.adapter.to_mif(generic_json)
+        output = self.adapter.from_mif(doc)
+        items = json.loads(output)
+        assert items[0]["tags"] == ["ops", "logging"]
 
 
 # ── MarkdownAdapter ──────────────────────────────────────────────────────
@@ -584,6 +667,33 @@ class TestMarkdownAdapter:
         ])
         output = self.adapter.from_mif(doc)
         assert output.count("---") >= 4  # at least 2 opening + 2 closing
+
+    # ── roundtrip ──
+
+    def test_roundtrip(self, markdown_single):
+        """markdown → MIF → markdown: content and type preserved."""
+        doc = self.adapter.to_mif(markdown_single)
+        output = self.adapter.from_mif(doc)
+        doc2 = self.adapter.to_mif(output)
+        assert len(doc2.memories) == len(doc.memories)
+        assert doc2.memories[0].content == doc.memories[0].content
+        assert doc2.memories[0].memory_type == doc.memories[0].memory_type
+
+    def test_roundtrip_tags(self, markdown_single):
+        """markdown → MIF → markdown: tags preserved."""
+        doc = self.adapter.to_mif(markdown_single)
+        output = self.adapter.from_mif(doc)
+        doc2 = self.adapter.to_mif(output)
+        assert doc2.memories[0].tags == ["python", "testing"]
+
+    def test_roundtrip_multi(self, markdown_multi):
+        """markdown → MIF → markdown: multiple blocks preserved."""
+        doc = self.adapter.to_mif(markdown_multi)
+        output = self.adapter.from_mif(doc)
+        doc2 = self.adapter.to_mif(output)
+        assert len(doc2.memories) == 2
+        assert doc2.memories[0].content == doc.memories[0].content
+        assert doc2.memories[1].content == doc.memories[1].content
 
     # ── empty / edge cases ──
 

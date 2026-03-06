@@ -101,6 +101,8 @@ Each entry in the `memories` array:
 
 The `content` field is plain text by default. Implementations MAY use `metadata.content_type` (e.g., `text/markdown`) to indicate alternative formats.
 
+**Metadata conventions:** Source systems often include a relevance or confidence score with each memory. When preserving this value, implementations SHOULD use `metadata.score` (number, 0–1).
+
 ### 2.1 Memory Types
 
 Lowercase snake_case strings. Common types seen across implementations:
