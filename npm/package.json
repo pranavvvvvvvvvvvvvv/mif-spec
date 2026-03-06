@@ -1,6 +1,6 @@
 {
   "name": "@varunshodh/mif-tools",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "MIF (Memory Interchange Format) — vendor-neutral memory portability for AI agents",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
